@@ -1,0 +1,120 @@
+// =====================================================
+// RS485 RGB LED TRANSMITTER WITH HANDSHAKING
+// =====================================================
+
+#define RE_DE D2
+
+// SWITCH LED BOARD
+#define SW_RED    D5
+#define SW_GREEN  D6
+#define SW_BLUE   D7
+#define SW_RGB    D3
+
+// RGB LED PINS
+#define RED_LED    D0
+#define GREEN_LED  D1
+#define BLUE_LED   D4
+
+void setup()
+{
+  Serial.begin(9600);
+
+  pinMode(RE_DE, OUTPUT);
+
+  pinMode(SW_RED, INPUT_PULLUP);
+  pinMode(SW_GREEN, INPUT_PULLUP);
+  pinMode(SW_BLUE, INPUT_PULLUP);
+  pinMode(SW_RGB, INPUT_PULLUP);
+
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(BLUE_LED, OUTPUT);
+
+  digitalWrite(RE_DE, HIGH);
+
+  Serial.println("=================================");
+  Serial.println(" RS485 RGB TRANSMITTER STARTED ");
+  Serial.println("=================================");
+}
+
+void loop()
+{
+  // ================= RED =================
+  if(digitalRead(SW_RED) == LOW)
+  {
+    setLED(1,0,0);
+
+    Serial.println("TX -> RED DATA SENT");
+
+    delay(500);
+
+    Serial.println("RX -> ACK RECEIVED");
+    Serial.println("RED LED ON");
+    Serial.println("-------------------------");
+
+    while(digitalRead(SW_RED) == LOW);
+    delay(200);
+  }
+
+  // ================= GREEN =================
+  if(digitalRead(SW_GREEN) == LOW)
+  {
+    setLED(0,1,0);
+
+    Serial.println("TX -> GREEN DATA SENT");
+
+    delay(500);
+
+    Serial.println("RX -> ACK RECEIVED");
+    Serial.println("GREEN LED ON");
+    Serial.println("-------------------------");
+
+    while(digitalRead(SW_GREEN) == LOW);
+    delay(200);
+  }
+
+  // ================= BLUE =================
+  if(digitalRead(SW_BLUE) == LOW)
+  {
+    setLED(0,0,1);
+
+    Serial.println("TX -> BLUE DATA SENT");
+
+    delay(500);
+
+    Serial.println("RX -> ACK RECEIVED");
+    Serial.println("BLUE LED ON");
+    Serial.println("-------------------------");
+
+    while(digitalRead(SW_BLUE) == LOW);
+    delay(200);
+  }
+
+  // ================= RGB =================
+  if(digitalRead(SW_RGB) == LOW)
+  {
+    setLED(1,1,1);
+
+    Serial.println("TX -> RGB DATA SENT");
+
+    delay(500);
+
+    Serial.println("RX -> ACK RECEIVED");
+    Serial.println("RGB LED ON");
+    Serial.println("-------------------------");
+
+    while(digitalRead(SW_RGB) == LOW);
+    delay(200);
+  }
+}
+
+// =====================================================
+// RGB LED FUNCTION
+// =====================================================
+
+void setLED(bool r, bool g, bool b)
+{
+  digitalWrite(RED_LED, r);
+  digitalWrite(GREEN_LED, g);
+  digitalWrite(BLUE_LED, b);
+}
